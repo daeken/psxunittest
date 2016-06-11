@@ -3,8 +3,8 @@ from cStringIO import StringIO
 # Emulator-specific
 def reset():
 	return 'cpu->Reset()'
-def runBlob(blob):
-	return 'runBlob(%i, {%s})' % (len(blob), ', '.join('0x%02x' % ord(x) for x in blob))
+def runBlob(load, blob):
+	return 'runBlob(0x%08x, %i, {%s})' % (load, len(blob), ', '.join('0x%02x' % ord(x) for x in blob))
 
 def writeGPR(gpr, value):
 	return 'cpu->GPR[%i] = %s' % (gpr, value)
@@ -61,7 +61,7 @@ def generateTest(fp, (name, setup, asserts, load, blob)):
 	for expr in setup:
 		print >>fp, '\t%s;' % toCode(expr)
 	print >>fp
-	print >>fp, '\t%s;' % runBlob(blob)
+	print >>fp, '\t%s;' % runBlob(load, blob)
 	print >>fp
 	for expr in asserts:
 		print >>fp, '\t%s;' % toCode(expr)
