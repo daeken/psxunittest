@@ -1,0 +1,3 @@
+void runtests() {
+$TESTS$
+}
