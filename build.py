@@ -18,10 +18,10 @@ for fn in glob('tests/*.py'):
 		continue
 
 	test.setup = []
-	test.asserts = []
+	test.expects = []
 	testmod = import_module('tests.' + fn[6:-3])
 	testmod.setup = test.setup
-	testmod.asserts = test.asserts
+	testmod.expects = test.expects
 
 	print 'Building test:', testmod.name
 
@@ -34,11 +34,11 @@ for fn in glob('tests/*.py'):
 	for expr in test.setup:
 		print expr
 
-	print 'Asserts:'
-	for expr in test.asserts:
+	print 'Expects:'
+	for expr in test.expects:
 		print expr
 
-	tests.append((testmod.name, testmod.setup, testmod.asserts, testmod.load, insns))
+	tests.append((testmod.name, testmod.setup, testmod.expects, testmod.load, insns))
 
 def run(tpl, out, gen):
 	generate(tpl, out, gen, tests)

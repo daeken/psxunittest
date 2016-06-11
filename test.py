@@ -4,16 +4,14 @@ load = 0x80000000
 # End defaults
 
 setup = None
-asserts = None
+expects = None
 
 class _GPR(object):
 	def __init__(self, reg):
 		self.reg = reg
 
 	def __eq__(self, rval):
-		asserts.append(('assert', ('eq', ('gpr', self.reg), rval)))
-	def __ne__(self, rval):
-		asserts.append(('assert', ('neq', ('gpr', self.reg), rval)))
+		expects.append(('expectEqual', ('gpr', self.reg), rval))
 
 class GPRs(object):
 	def __getitem__(self, reg):
@@ -30,9 +28,7 @@ class MemAccess(object):
 		self.addr = addr
 
 	def __eq__(self, rval):
-		asserts.append(('assert', ('eq', ('mem', self.size, self.addr), rval)))
-	def __ne__(self, rval):
-		asserts.append(('assert', ('neq', ('mem', self.size, self.addr), rval)))
+		expects.append(('expectEqual', ('mem', self.size, self.addr), rval))
 
 class Memory(object):
 	def __init__(self, size):

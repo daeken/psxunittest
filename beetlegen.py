@@ -5,8 +5,8 @@ class Generator(object):
 		return 'cpu->Reset()'
 	def storeBlobArray(self, name, blob):
 		return 'uint32_t %s[] = {%s}' % (name, ', '.join('0x%08x' % x for x in blob))
-	def runBlob(self, load, name, blob):
-		return 'runBlob(0x%08x, %i, %s)' % (load, len(blob), name)
+	def loadBlob(self, load, name, blob):
+		return 'loadBlob(0x%08x, %i, %s)' % (load, len(blob), name)
 
 	def writeGPR(self, gpr, value):
 		return 'cpu->GPR[%i] = %s' % (gpr, value)
@@ -20,9 +20,15 @@ class Generator(object):
 
 	def testStart(self, name):
 		return 'testStart(%s)' % cstr(name)
-	def testAssert(self, expr):
-		return 'testAssert(%s)' % expr
+	def testExpectEqual(self, state, expect):
+		return 'testExpectEqual(%s, %s)' % (state, expect)
 	def testEnd(self):
 		return 'testEnd()'
+
+	def case(self, i):
+		return 'case %i: {' % i
+
+	def caseEnd(self):
+		return '\tbreak;\n}'
 
 run('template.cpp', 'testrunner.cpp', Generator())
