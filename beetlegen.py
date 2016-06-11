@@ -2,11 +2,11 @@ from build import *
 
 class Generator(object):
 	def reset(self):
-		return 'cpu->Reset()'
+		return 'cpu->Power()'
 	def storeBlobArray(self, name, blob):
 		return 'uint32_t %s[] = {%s}' % (name, ', '.join('0x%08x' % x for x in blob))
 	def loadBlob(self, load, name, blob):
-		return 'loadBlob(0x%08x, %i, %s)' % (load, len(blob), name)
+		return 'pc = loadBlob(0x%08x, %i, %s)' % (load, len(blob), name)
 
 	def writeGPR(self, gpr, value):
 		return 'cpu->GPR[%i] = %s' % (gpr, value)

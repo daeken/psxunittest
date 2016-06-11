@@ -6,7 +6,6 @@ load = 0x80000000
 GPR[2] = 0xDEAD
 GPR[3] = 0
 GPR[5] = 1
-Mem8[5] = 123
 
 code = '''
 loop:
@@ -19,4 +18,3 @@ loop:
 GPR[2] == 0
 GPR[3] == 0xDEAD
 GPR[5] == 1
-Mem8[5] == 123

@@ -37,6 +37,7 @@ def generateTest(fp, (name, setup, expects, load, blob)):
 	global cases
 	if cases == 0:
 		print >>fp, '%s' % gen.case(cases)
+		cases += 1
 	else:
 		print >>fp
 	print >>fp, '\t%s;' % gen.testStart(name)
@@ -50,15 +51,12 @@ def generateTest(fp, (name, setup, expects, load, blob)):
 	print >>fp, '%s' % gen.caseEnd()
 	print >>fp
 
-	print >>fp, '%s' % gen.case(cases+1)
+	print >>fp, '%s' % gen.case(cases)
 	for expr in expects:
 		print >>fp, '\t%s;' % toCode(expr)
 	print >>fp, '\t%s;' % gen.testEnd()
 
-	if cases == 0:
-		cases = 2
-	else:
-		cases += 1
+	cases += 1
 
 gen = None
 
