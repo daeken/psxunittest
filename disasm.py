@@ -13,6 +13,9 @@ def signext(size, v):
 		return v - (1 << size)
 	return v
 
+def zeroext(size, v):
+	return v
+
 def disassemble(pc, inst):
 
 	if (inst) >> (0x1a) == 0x0:

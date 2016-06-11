@@ -16,7 +16,7 @@ def dag2expr(dag):
 	else:
 		return dag
 
-if not os.path.exists('dinsts.td.cache') or os.path.getmtime('insts.td') > os.path.getmtime('insts.td.cache'):
+if not os.path.exists('dinsts.td.cache') or os.path.getmtime('insts.td') > os.path.getmtime('dinsts.td.cache'):
 	print 'Rebuilding instruction cache'
 	insts = interpret('insts.td').deriving('BaseInst')
 	ops = []
