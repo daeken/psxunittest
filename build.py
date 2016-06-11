@@ -25,7 +25,7 @@ for fn in glob('tests/*.py'):
 
 	print 'Building test:', testmod.name
 
-	code, insns = build(testmod.load, testmod.code + '\nj 0x0ADBEE0')
+	code, insns = build(testmod.load, testmod.code + '\nj 0xEADBEE0')
 
 	for i, insn in enumerate(insns):
 		print '%08x    %s' % (testmod.load + i * 4, disassemble(testmod.load + i * 4, insn))
@@ -38,6 +38,6 @@ for fn in glob('tests/*.py'):
 	for expr in test.asserts:
 		print expr
 
-	tests.append((testmod.name, testmod.setup, testmod.asserts, testmod.load, code))
+	tests.append((testmod.name, testmod.setup, testmod.asserts, testmod.load, insns))
 
 generate(tests)

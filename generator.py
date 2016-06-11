@@ -4,7 +4,7 @@ from cStringIO import StringIO
 def reset():
 	return 'cpu->Reset()'
 def runBlob(load, blob):
-	return 'runBlob(0x%08x, %i, {%s})' % (load, len(blob), ', '.join('0x%02x' % ord(x) for x in blob))
+	return 'runBlob(0x%08x, %i, {%s})' % (load, len(blob), ', '.join('0x%08x' % x for x in blob))
 
 def writeGPR(gpr, value):
 	return 'cpu->GPR[%i] = %s' % (gpr, value)
