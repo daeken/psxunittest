@@ -1,3 +1,5 @@
+#include "psx.h"
+
 bool failed, failedAny = false;
 int state = 0;
 
