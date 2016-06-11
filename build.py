@@ -25,7 +25,7 @@ for fn in glob('tests/*.py'):
 
 	print 'Building test:', testmod.name
 
-	code, insns = build(testmod.load, testmod.code + '\nj 0xEADBEE0')
+	code, insns = build(testmod.load, testmod.code + '\nj 0x0ADBEE0')
 
 	for i, insn in enumerate(insns):
 		print '%08x    %s' % (testmod.load + i * 4, disassemble(testmod.load + i * 4, insn))
