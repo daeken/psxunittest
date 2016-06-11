@@ -14,5 +14,4 @@ void runtests() {
 	testAssert(cpu->PeekMem8(5) == 123);
 	testEnd();
 
-
 }

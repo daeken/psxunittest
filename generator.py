@@ -71,7 +71,6 @@ def generate(tests):
 	sio = StringIO()
 	for test in tests:
 		generateTest(sio, test)
-		print >>sio
 	testcode = sio.getvalue()
 	with file('testrunner.cpp', 'w') as fp:
 		with file('template.cpp', 'r') as tfp:
