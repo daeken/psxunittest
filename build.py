@@ -40,4 +40,10 @@ for fn in glob('tests/*.py'):
 
 	tests.append((testmod.name, testmod.setup, testmod.asserts, testmod.load, insns))
 
-generate(tests)
+def run(tpl, out, gen):
+	generate(tpl, out, gen, tests)
+
+def cstr(val):
+	val = `val + "'"`[:-2] + '"'
+	assert val[0] == '"'
+	return val
