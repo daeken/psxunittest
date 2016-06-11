@@ -3,8 +3,10 @@ from build import *
 class Generator(object):
 	def reset(self):
 		return 'cpu->Reset()'
-	def runBlob(self, load, blob):
-		return 'runBlob(0x%08x, %i, {%s})' % (load, len(blob), ', '.join('0x%08x' % x for x in blob))
+	def storeBlobArray(self, name, blob):
+		return 'uint32_t %s[] = {%s}' % (name, ', '.join('0x%08x' % x for x in blob))
+	def runBlob(self, load, name, blob):
+		return 'runBlob(0x%08x, %i, %s)' % (load, len(blob), name)
 
 	def writeGPR(self, gpr, value):
 		return 'cpu->GPR[%i] = %s' % (gpr, value)

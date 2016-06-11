@@ -26,13 +26,21 @@ def toCode(expr):
 	else:
 		print 'Unknown expression:', expr
 
+tempi = 0
+def tempname(prefix='temp'):
+	global tempi
+	tempi += 1
+	return '%s_%i' % (prefix, tempi)
+
 def generateTest(fp, (name, setup, asserts, load, blob)):
 	print >>fp, '\t%s;' % gen.testStart(name)
 	print >>fp, '\t%s;' % gen.reset()
 	for expr in setup:
 		print >>fp, '\t%s;' % toCode(expr)
 	print >>fp
-	print >>fp, '\t%s;' % gen.runBlob(load, blob)
+	name = tempname('blob')
+	print >>fp, '\t%s;' % gen.storeBlobArray(name, blob)
+	print >>fp, '\t%s;' % gen.runBlob(load, name, blob)
 	print >>fp
 	for expr in asserts:
 		print >>fp, '\t%s;' % toCode(expr)
