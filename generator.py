@@ -40,7 +40,7 @@ def generate(tpl, out, genobj, tests):
 	sio = StringIO()
 	for test in tests:
 		gen.generateTest(sio, test)
-	print >>sio, '%s' % gen.caseEnd()
+	gen.generateEnd(sio)
 	testcode = sio.getvalue().rstrip()
 	with file(out, 'w') as fp:
 		with file(tpl, 'r') as tfp:

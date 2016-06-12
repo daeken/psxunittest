@@ -57,4 +57,7 @@ class Generator(object):
 
 		self.cases += 1
 
+	def generateEnd(self, fp):
+		print >>fp, '%s' % self.caseEnd()
+
 run('beetletemplate.cpp', 'cputest.cpp', Generator())
