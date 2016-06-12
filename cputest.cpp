@@ -24,14 +24,17 @@ uint32_t loadBlob(uint32_t addr, int len, uint32_t *blob) {
 	return addr;
 }
 
+#define GetGPR(gpr) cpu->GetRegister(gpr, NULL, 0)
+#define SetGPR(gpr, val) cpu->SetRegister(gpr, val)
+
 uint32_t cpuTest() {
 	uint32_t pc;
 	switch(testState++) {
 		case 0: {
 			testStart("ADD 1");
 			cpu->Power();
-			cpu->GPR[1] = 10;
-			cpu->GPR[2] = -15;
+			SetGPR(1, 10);
+			SetGPR(2, -15);
 		
 			uint32_t blob_1[] = {0x00201820, 0x00222020, 0x00412820, 0x00423020, 0x0bab6fb8, 0x00000000};
 			pc = loadBlob(0x80000000, 6, blob_1);
@@ -39,35 +42,48 @@ uint32_t cpuTest() {
 		}
 		
 		case 1: {
-			testExpectEqual(cpu->GPR[1], 10);
-			testExpectEqual(cpu->GPR[2], -15);
-			testExpectEqual(cpu->GPR[3], 10);
-			testExpectEqual(cpu->GPR[4], -5);
-			testExpectEqual(cpu->GPR[5], -5);
-			testExpectEqual(cpu->GPR[6], -30);
+			testExpectEqual(GetGPR(1), 10);
+			testExpectEqual(GetGPR(2), -15);
+			testExpectEqual(GetGPR(3), 10);
+			testExpectEqual(GetGPR(4), -5);
+			testExpectEqual(GetGPR(5), -5);
+			testExpectEqual(GetGPR(6), -30);
 			testEnd();
 		
-			testStart("Arithmetic/branching test");
+			testStart("Branch in branch delay");
 			cpu->Power();
-			cpu->GPR[2] = 57005;
-			cpu->GPR[3] = 0;
-			cpu->GPR[5] = 1;
 		
-			uint32_t blob_2[] = {0x00451023, 0x24630001, 0x1c40fffd, 0x00000000, 0x0bab6fb8, 0x00000000};
-			pc = loadBlob(0x80000000, 6, blob_2);
+			uint32_t blob_2[] = {0x10000002, 0x10000004, 0x00000000, 0x20010001, 0x10000002, 0x00000000, 0x20020001, 0x00000000, 0x0bab6fb8, 0x00000000};
+			pc = loadBlob(0x80000000, 10, blob_2);
 			break;
 		}
 		
 		case 2: {
-			testExpectEqual(cpu->GPR[2], 0);
-			testExpectEqual(cpu->GPR[3], 57005);
-			testExpectEqual(cpu->GPR[5], 1);
+			testExpectEqual(GetGPR(1), 1);
+			testExpectEqual(GetGPR(2), 0);
+			testEnd();
+		
+			testStart("Arithmetic/branching test");
+			cpu->Power();
+			SetGPR(2, 57005);
+			SetGPR(3, 0);
+			SetGPR(5, 1);
+		
+			uint32_t blob_3[] = {0x00451023, 0x24630001, 0x1c40fffd, 0x00000000, 0x0bab6fb8, 0x00000000};
+			pc = loadBlob(0x80000000, 6, blob_3);
+			break;
+		}
+		
+		case 3: {
+			testExpectEqual(GetGPR(2), 0);
+			testExpectEqual(GetGPR(3), 57005);
+			testExpectEqual(GetGPR(5), 1);
 			testEnd();
 			break;
 		}
 	}
 
-	if(testState == 3) {
+	if(testState == 4) {
 		if(failedAny)
 			exit(1);
 		exit(0);

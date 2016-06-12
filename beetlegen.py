@@ -9,9 +9,9 @@ class Generator(object):
 		return 'pc = loadBlob(0x%08x, %i, %s)' % (load, len(blob), name)
 
 	def writeGPR(self, gpr, value):
-		return 'cpu->GPR[%i] = %s' % (gpr, value)
+		return 'SetGPR(%i, %s)' % (gpr, value)
 	def readGPR(self, gpr):
-		return 'cpu->GPR[%i]' % gpr
+		return 'GetGPR(%i)' % gpr
 
 	def writeMemory(self, size, ptr, value):
 		return 'cpu->PokeMem%i(%s, %s)' % (size, ptr, value)

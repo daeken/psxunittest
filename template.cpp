@@ -24,6 +24,9 @@ uint32_t loadBlob(uint32_t addr, int len, uint32_t *blob) {
 	return addr;
 }
 
+#define GetGPR(gpr) cpu->GetRegister(gpr, NULL, 0)
+#define SetGPR(gpr, val) cpu->SetRegister(gpr, val)
+
 uint32_t cpuTest() {
 	uint32_t pc;
 	switch(testState++) {
