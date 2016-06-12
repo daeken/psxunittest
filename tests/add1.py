@@ -1,7 +1,7 @@
 from test import *
 
 name = 'ADD 1'
-load = 0x80000000
+load = 0x80100000
 
 GPR[1] = 10
 GPR[2] = -15

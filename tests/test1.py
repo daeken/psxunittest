@@ -1,7 +1,7 @@
 from test import *
 
 name = 'Arithmetic/branching test'
-load = 0x80000000
+load = 0x80100000
 
 GPR[2] = 0xDEAD
 GPR[3] = 0

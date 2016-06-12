@@ -16,6 +16,9 @@ def signext(size, v):
 def zeroext(size, v):
 	return v
 
+def gpr(reg):
+	return reg
+
 def disassemble(pc, inst):
 
 	if (inst) >> (0x1a) == 0x0:

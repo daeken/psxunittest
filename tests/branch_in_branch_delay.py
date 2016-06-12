@@ -1,7 +1,7 @@
 from test import *
 
 name = 'Branch in branch delay'
-load = 0x80000000
+load = 0x80100000
 
 code = '''
 	beq $0, $0, part1

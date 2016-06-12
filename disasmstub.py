@@ -14,3 +14,6 @@ def signext(size, v):
 
 def zeroext(size, v):
 	return v
+
+def gpr(reg):
+	return reg

@@ -1,7 +1,7 @@
 from test import *
 
 name = 'BEQ'
-load = 0x80000000
+load = 0x80100000
 
 GPR[1] = 1
 GPR[2] = 2
@@ -22,7 +22,6 @@ nt:
 
 end:
 	nop
-
 '''
 
 GPR[10] == 1
