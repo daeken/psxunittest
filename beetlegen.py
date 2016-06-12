@@ -1,6 +1,8 @@
 from build import *
 
 class Generator(object):
+	cases = 0
+
 	def reset(self):
 		return 'cpu->Power()'
 	def storeBlobArray(self, name, blob):
@@ -30,5 +32,29 @@ class Generator(object):
 
 	def caseEnd(self):
 		return '\tbreak;\n}'
+
+	def generateTest(self, fp, (name, setup, expects, load, blob)):
+		if self.cases == 0:
+			print >>fp, '%s' % self.case(self.cases)
+			self.cases += 1
+		else:
+			print >>fp
+		print >>fp, '\t%s;' % self.testStart(name)
+		print >>fp, '\t%s;' % self.reset()
+		for expr in setup:
+			print >>fp, '\t%s;' % toCode(expr)
+		print >>fp
+		name = tempname('blob')
+		print >>fp, '\t%s;' % self.storeBlobArray(name, blob)
+		print >>fp, '\t%s;' % self.loadBlob(load, name, blob)
+		print >>fp, '%s' % self.caseEnd()
+		print >>fp
+
+		print >>fp, '%s' % self.case(self.cases)
+		for expr in expects:
+			print >>fp, '\t%s;' % toCode(expr)
+		print >>fp, '\t%s;' % self.testEnd()
+
+		self.cases += 1
 
 run('beetletemplate.cpp', 'cputest.cpp', Generator())

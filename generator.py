@@ -32,32 +32,6 @@ def tempname(prefix='temp'):
 	tempi += 1
 	return '%s_%i' % (prefix, tempi)
 
-cases = 0
-def generateTest(fp, (name, setup, expects, load, blob)):
-	global cases
-	if cases == 0:
-		print >>fp, '%s' % gen.case(cases)
-		cases += 1
-	else:
-		print >>fp
-	print >>fp, '\t%s;' % gen.testStart(name)
-	print >>fp, '\t%s;' % gen.reset()
-	for expr in setup:
-		print >>fp, '\t%s;' % toCode(expr)
-	print >>fp
-	name = tempname('blob')
-	print >>fp, '\t%s;' % gen.storeBlobArray(name, blob)
-	print >>fp, '\t%s;' % gen.loadBlob(load, name, blob)
-	print >>fp, '%s' % gen.caseEnd()
-	print >>fp
-
-	print >>fp, '%s' % gen.case(cases)
-	for expr in expects:
-		print >>fp, '\t%s;' % toCode(expr)
-	print >>fp, '\t%s;' % gen.testEnd()
-
-	cases += 1
-
 gen = None
 
 def generate(tpl, out, genobj, tests):
@@ -65,7 +39,7 @@ def generate(tpl, out, genobj, tests):
 	gen = genobj
 	sio = StringIO()
 	for test in tests:
-		generateTest(sio, test)
+		gen.generateTest(sio, test)
 	print >>sio, '%s' % gen.caseEnd()
 	testcode = sio.getvalue().rstrip()
 	with file(out, 'w') as fp:

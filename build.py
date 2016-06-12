@@ -1,16 +1,17 @@
 import struct, test
 from disasm import disassemble
-from generator import generate
+from generator import *
 from glob import glob
 from importlib import import_module
-from mips_assembler import MIPSProgram
+from assembler import assemble
 
-def build(base, asm):
-	mp = MIPSProgram(text_base=base)
-	mp.AddLines(asm.split('\n'))
-	bytes = mp.Bytes(endian='little')
-	code = ''.join(map(chr, bytes))
-	return code, [struct.unpack('<I', code[i:i+4])[0] for i in xrange(0, len(code), 4)]
+exchandler = '''
+	mfc0 $1, $14
+	rfe
+	jr $1
+	nop
+'''
+insns = assemble(0x80000080, exchandler)
 
 tests = []
 for fn in glob('tests/*.py'):
@@ -23,10 +24,11 @@ for fn in glob('tests/*.py'):
 	testmod.setup = test.setup
 	testmod.expects = test.expects
 
-	print 'Building test:', testmod.name
+	#print 'Building test:', testmod.name
 
-	code, insns = build(testmod.load, testmod.code + '\nj 0x0EADBEE0\nnop')
+	insns = assemble(testmod.load, testmod.code + '\nj 0x0EADBEE0\nnop')
 
+	"""
 	for i, insn in enumerate(insns):
 		print '%08x    %s' % (testmod.load + i * 4, disassemble(testmod.load + i * 4, insn))
 
@@ -37,6 +39,7 @@ for fn in glob('tests/*.py'):
 	print 'Expects:'
 	for expr in test.expects:
 		print expr
+	"""
 
 	tests.append((testmod.name, testmod.setup, testmod.expects, testmod.load, insns))
 
