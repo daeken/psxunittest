@@ -31,4 +31,4 @@ class Generator(object):
 	def caseEnd(self):
 		return '\tbreak;\n}'
 
-run('template.cpp', 'cputest.cpp', Generator())
+run('beetletemplate.cpp', 'cputest.cpp', Generator())

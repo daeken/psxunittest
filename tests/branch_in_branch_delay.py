@@ -6,7 +6,7 @@ load = 0x80000000
 code = '''
 	beq $0, $0, part1
 	beq $0, $0, part2
-	nop
+	addi $3, $0, 1
 
 part1:
 	addi $1, $0, 1
@@ -22,3 +22,4 @@ end:
 
 GPR[1] == 1
 GPR[2] == 0
+GPR[3] == 0
