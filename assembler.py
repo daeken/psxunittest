@@ -14,20 +14,21 @@ mint = regex(r'^(-?(0x)?[0-9a-fA-F]+)$')
 mref = regex(r'^(-?[x0-9a-fA-F]+)\(\$([0-9]+)\)$')
 
 def parseOperand(op):
-	if op in labels:
-		return [labels[op]]
-	elif op.startswith('$'):
-		return [int(op[1:])]
-	elif mint(op):
-		return [eval(op)]
-	elif mref(op):
-		return list(map(eval, mref(op)))
+	if op in labels: return [labels[op]]
+	elif op.startswith('$'): return [int(op[1:])]
+	elif mint(op): return [eval(op)]
+	elif mref(op): return list(map(eval, mref(op)))
 
 def processInsn(mnem, ops):
 	if mnem == 'nop':
 		return [('sll', ('0', '0', '0'))]
 	elif mnem == 'rfe':
 		return [('cop0', ('16', ))]
+	elif mnem == 'li':
+		ret, imm = [], parseOperand(ops[1])[0]
+		if (imm & 0xFFFF0000) != 0: ret.append(('lui', (ops[1], '0x%04x' % (imm >> 16))))
+		if (imm & 0xFFFF) != 0: ret.append(('addi', (ops[1], ops[1] if ((imm & 0xFFFF0000) != 0) else '$0', '0x%04x' % (imm & 0xFFFF))))
+		return ret
 	return [(mnem, ops)]
 
 def assemble(base, code):
@@ -196,5 +197,4 @@ indefs = dict(
 	xori   =(IType, 0b001110, (rt, rs, imm)), 
 )
 for k, v in indefs.items():
-	if '_' in k:
-		indefs[k.replace('_', '')] = v
+	indefs[k.replace('_', '')] = v
