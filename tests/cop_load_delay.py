@@ -8,6 +8,7 @@ Mem32[0x80110000] = 0xDEADBEEF
 
 code = '''
 	lw $3, 0($2)
+	nop
 	mfc2 $3, $25
 	beq $3, $0, .zero
 	nop
