@@ -84,7 +84,7 @@ def buildInsn(addr, mnem, ops):
 		for i in range(len(params)):
 			put(rs, 21, 5)
 			put(rt, 16, 5)
-			put(imm, 0, 16)
+			put(imm, 0, 16); put(offset, 0, 16)
 			put(target, 0, 16, lambda val: (val - (addr + 4)) >> 2)
 	elif type == JType:
 		inst[0] |= odef << 26
