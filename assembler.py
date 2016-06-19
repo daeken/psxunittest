@@ -19,6 +19,10 @@ def parseOperand(op):
 	elif mint(op): return [eval(op)]
 	elif mref(op): return list(map(eval, mref(op)))
 
+def hexify(size, val):
+	if val >= 0: return ('0x%%0%ix' % size) % val
+	else: return ('-0x%%0%ix' % size) % -val
+
 def processInsn(mnem, ops):
 	if mnem == 'nop':
 		return [('sll', ('0', '0', '0'))]
@@ -26,8 +30,8 @@ def processInsn(mnem, ops):
 		return [('cop0', ('16', ))]
 	elif mnem == 'li':
 		ret, imm = [], parseOperand(ops[1])[0]
-		if (imm & 0xFFFF0000) != 0: ret.append(('lui', (ops[1], '0x%04x' % (imm >> 16))))
-		if (imm & 0xFFFF) != 0: ret.append(('addi', (ops[1], ops[1] if ((imm & 0xFFFF0000) != 0) else '$0', '0x%04x' % (imm & 0xFFFF))))
+		if (imm & 0xFFFF0000) != 0: ret.append(('lui', (ops[0], hexify(4, (imm >> 16)))))
+		if (imm & 0xFFFF) != 0: ret.append(('addi', (ops[0], ops[0] if ((imm & 0xFFFF0000) != 0) else '$0', hexify(4, (imm & 0xFFFF)))))
 		return ret
 	return [(mnem, ops)]
 
