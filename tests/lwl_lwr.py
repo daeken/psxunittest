@@ -1,6 +1,6 @@
 from test import *
 
-name = 'LWR and LWR'
+name = 'LWL and LWR'
 load = 0x80100000
 
 Mem32[0x0] = 0x76543210
