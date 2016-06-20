@@ -31,7 +31,7 @@ def processInsn(mnem, ops):
 	elif mnem == 'li':
 		ret, imm = [], parseOperand(ops[1])[0]
 		if (imm & 0xFFFF0000) != 0: ret.append(('lui', (ops[0], hexify(4, (imm >> 16)))))
-		if (imm & 0xFFFF) != 0: ret.append(('addi', (ops[0], ops[0] if ((imm & 0xFFFF0000) != 0) else '$0', hexify(4, (imm & 0xFFFF)))))
+		if (imm & 0xFFFF) != 0: ret.append(('ori', (ops[0], ops[0] if ((imm & 0xFFFF0000) != 0) else '$0', hexify(4, (imm & 0xFFFF)))))
 		return ret
 	elif mnem == 'move':
 		return [('addu', (ops[0], ops[1], '$0'))]
